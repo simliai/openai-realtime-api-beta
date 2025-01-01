@@ -154,20 +154,24 @@
  * @property {UsageType|null} usage
  */
 /**
+ * RealtimeClient Settings
+ * @typedef {Object} RealtimeClientSettings
+ * @property {string} [url] - The URL for the realtime client
+ * @property {string} [apiKey] - The API key
+ * @property {string} [model] - The model name to use
+ * @property {boolean} [dangerouslyAllowAPIKeyInBrowser] - Whether to allow API key in browser
+ * @property {boolean} [debug] - Enable debug mode
+ */
+/**
  * RealtimeClient Class
  * @class
  */
 export class RealtimeClient extends RealtimeEventHandler {
     /**
      * Create a new RealtimeClient instance
-     * @param {{url?: string, apiKey?: string, dangerouslyAllowAPIKeyInBrowser?: boolean, debug?: boolean}} [settings]
+     * @param {RealtimeClientSettings} [settings]
      */
-    constructor({ url, apiKey, dangerouslyAllowAPIKeyInBrowser, debug }?: {
-        url?: string;
-        apiKey?: string;
-        dangerouslyAllowAPIKeyInBrowser?: boolean;
-        debug?: boolean;
-    });
+    constructor({ url, apiKey, model, dangerouslyAllowAPIKeyInBrowser, debug, }?: RealtimeClientSettings);
     defaultSessionConfig: {
         modalities: string[];
         instructions: string;
@@ -181,6 +185,7 @@ export class RealtimeClient extends RealtimeEventHandler {
         temperature: number;
         max_response_output_tokens: number;
     };
+    realtimeModel: string;
     sessionConfig: {};
     transcriptionModels: {
         model: string;
@@ -336,8 +341,7 @@ export type SessionResourceType = {
     model?: string;
     modalities?: string[];
     instructions?: string;
-    voice?: "alloy"|"ash"|"ballad"|"coral"|"echo"|"sage"|"shimmer"|"verse";
-
+    voice?: "alloy" | "ash" | "ballad" | "coral" | "echo" | "sage" | "shimmer" | "verse";
     input_audio_format?: AudioFormatType;
     output_audio_format?: AudioFormatType;
     input_audio_transcription?: AudioTranscriptionType | null;
@@ -453,6 +457,31 @@ export type ResponseResourceType = {
     status_details: IncompleteResponseStatusType | FailedResponseStatusType | null;
     output: ItemType[];
     usage: UsageType | null;
+};
+/**
+ * RealtimeClient Settings
+ */
+export type RealtimeClientSettings = {
+    /**
+     * - The URL for the realtime client
+     */
+    url?: string;
+    /**
+     * - The API key
+     */
+    apiKey?: string;
+    /**
+     * - The model name to use
+     */
+    model?: string;
+    /**
+     * - Whether to allow API key in browser
+     */
+    dangerouslyAllowAPIKeyInBrowser?: boolean;
+    /**
+     * - Enable debug mode
+     */
+    debug?: boolean;
 };
 import { RealtimeEventHandler } from './event_handler.js';
 import { RealtimeAPI } from './api.js';
